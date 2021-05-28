@@ -8,9 +8,24 @@ def get_id(page):
         id = obj_json['logging_page_id']
         return id[12:]
 
-def get_json(page):
+def get_reels_id(page):
     obj_json = json.loads(page)
-    return obj_json
+    return obj_json['user']['id']
+
+def get_stories_timeline(page,reels_id):
+    obj_json = json.loads(page)
+    return obj_json['reels'][str(reels_id)]['items']
+
+def nav_stories_timeline(obj_json):
+    lista = []
+    for item in obj_json:
+        if item['media_type'] == 1:
+            lista.append(1)
+            lista.append(item['image_versions2']['candidates'][0]['url'])
+        elif item['media_type'] == 2:
+            lista.append(2)
+            lista.append(item['video_versions'][0]['url'])
+    return lista
 
 def has_next_page(json):
     if json['data']['user']['edge_owner_to_timeline_media']['page_info']['has_next_page'] == True:
