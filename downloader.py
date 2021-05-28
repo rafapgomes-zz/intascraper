@@ -1,19 +1,21 @@
 import requests
 
 from pathlib import Path
-pasta = Path('downloads')
+def download(url,name,tipo,file):
 
-def download(url,name):
     response = requests.get(url)
-    arq = str(name) + '.jpeg'
-    with (pasta/arq).open("wb") as f:
+    arq = str(name) + tipo
+    with open(file+'/'+arq,'wb') as f:
             f.write(response.content)
     f.close()
-
-    tamanho = Path('downloads/'+str(name)+'.jpeg').stat().st_size
+    caminho = file +'/'+ arq
+    print(caminho)
+    tamanho = Path(caminho).stat().st_size
+    print(tamanho)
     if tamanho == 0:
         print("Download falhou, tentando novamente")
-        download(url,name)
+        return 
+        download(url,name,tipo,file)
     print('Download completo')
 
-   
+        
